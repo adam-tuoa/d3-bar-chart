@@ -98,15 +98,17 @@ export default function App() {
   useEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
-        const containerWidth = containerRef.current.clientWidth - 80; // account for padding
         const isMobile = window.innerWidth < 768;
 
-        // Responsive sizing
-        const width = Math.min(containerWidth, isMobile ? containerWidth : 650);
-        const height = isMobile ? 800 : 600;
-
-        setChartWidth(width);
-        setChartHeight(height);
+        if (isMobile) {
+          // Mobile: just use fixed smaller size to keep it readable
+          setChartWidth(350);
+          setChartHeight(700);
+        } else {
+          // Desktop: original responsive sizing
+          setChartWidth(650);
+          setChartHeight(600);
+        }
       }
     };
 
@@ -134,20 +136,30 @@ export default function App() {
           A chart showing the geographic student diversity of D3 ❤️ React's
           inaugural cohort.
         </p>
-        <div style={{ position: "relative", display: "inline-block" }}>
-          <Barplot2 data={data} width={chartWidth} height={chartHeight} />
-          <div
-            style={{
-              position: "absolute",
-              bottom: Math.max(chartHeight * 0.15, 50),
-              right: "30px",
-            }}
-          >
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "30px" }}>
+          <div style={{ position: "relative", display: "inline-block" }}>
+            <Barplot2 data={data} width={chartWidth} height={chartHeight} />
+            {chartWidth >= 500 && (
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "100px",
+                  right: "50px",
+                }}
+              >
+                <TotalBox
+                  total={data.reduce((sum, d) => sum + d.students, 0)}
+                  countries={data.length}
+                />
+              </div>
+            )}
+          </div>
+          {chartWidth < 500 && (
             <TotalBox
               total={data.reduce((sum, d) => sum + d.students, 0)}
               countries={data.length}
             />
-          </div>
+          )}
         </div>
       </div>
       <Footer
