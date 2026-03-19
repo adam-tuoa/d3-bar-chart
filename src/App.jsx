@@ -106,7 +106,8 @@ export default function App() {
           D3 ❤️ React Goes Global
         </h1>
         <p style={{ marginBottom: "30px", color: "#666" }}>
-          Inaugural cohort by country
+          A chart showing the geographic diversity of students in D3 ❤️ React's
+          inaugural cohort.
         </p>
         <Barplot2 data={data} />
       </div>
