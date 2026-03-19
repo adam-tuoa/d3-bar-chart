@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import Footer from "./components/Footer";
+import TotalBox from "./components/TotalBox";
 
 const data = [
   { country: "United States", students: 68, flag: "🇺🇸" },
@@ -27,7 +28,7 @@ const data = [
 export const Barplot2 = ({ data = [] }) => {
   const width = 650;
   const height = 600;
-  const margin = { top: 20, right: 30, bottom: 20, left: 190 };
+  const margin = { top: 20, right: 40, bottom: 20, left: 200 };
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
 
@@ -55,8 +56,8 @@ export const Barplot2 = ({ data = [] }) => {
             width={xScale(d.students)}
             height={yScale.bandwidth()}
             fill="#F59E0B"
-            rx={4}
-            ry={4}
+            rx={10}
+            ry={10}
           />
         ))}
         {data.map((d) => (
@@ -75,9 +76,9 @@ export const Barplot2 = ({ data = [] }) => {
         {data.map((d) => (
           <foreignObject
             key={`label-${d.country}`}
-            x={-190}
+            x={-220}
             y={yScale(d.country) + yScale.bandwidth() / 2 - 12}
-            width={180}
+            width={215}
             height={30}
           >
             <div style={{ textAlign: "right", fontSize: 18, color: "#333" }}>
@@ -109,7 +110,21 @@ export default function App() {
           A chart showing the geographic diversity of students in D3 ❤️ React's
           inaugural cohort.
         </p>
-        <Barplot2 data={data} />
+        <div style={{ position: "relative", display: "inline-block" }}>
+          <Barplot2 data={data} />
+          <div
+            style={{
+              position: "absolute",
+              bottom: "100px",
+              right: "50px",
+            }}
+          >
+            <TotalBox
+              total={data.reduce((sum, d) => sum + d.students, 0)}
+              countries={data.length}
+            />
+          </div>
+        </div>
       </div>
       <Footer
         attribution={{
