@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { useEffect, useRef, useState } from "react";
 import Footer from "./components/Footer";
 import TotalBox from "./components/TotalBox";
 
@@ -25,9 +26,7 @@ const data = [
   { country: "New Zealand", students: 3, flag: "🇳🇿" },
 ];
 
-export const Barplot2 = ({ data = [] }) => {
-  const width = 650;
-  const height = 600;
+export const Barplot2 = ({ data = [], width = 650, height = 600 }) => {
   const margin = { top: 20, right: 40, bottom: 20, left: 200 };
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
@@ -92,8 +91,33 @@ export const Barplot2 = ({ data = [] }) => {
 };
 
 export default function App() {
+  const containerRef = useRef(null);
+  const [chartWidth, setChartWidth] = useState(650);
+  const [chartHeight, setChartHeight] = useState(600);
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (containerRef.current) {
+        const containerWidth = containerRef.current.clientWidth - 80; // account for padding
+        const isMobile = window.innerWidth < 768;
+
+        // Responsive sizing
+        const width = Math.min(containerWidth, isMobile ? containerWidth : 650);
+        const height = isMobile ? 800 : 600;
+
+        setChartWidth(width);
+        setChartHeight(height);
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
+
   return (
     <div
+      ref={containerRef}
       style={{
         padding: "40px",
         background: "#f9f9f9",
@@ -111,12 +135,12 @@ export default function App() {
           inaugural cohort.
         </p>
         <div style={{ position: "relative", display: "inline-block" }}>
-          <Barplot2 data={data} />
+          <Barplot2 data={data} width={chartWidth} height={chartHeight} />
           <div
             style={{
               position: "absolute",
-              bottom: "100px",
-              right: "50px",
+              bottom: Math.max(chartHeight * 0.15, 50),
+              right: "30px",
             }}
           >
             <TotalBox
