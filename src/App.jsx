@@ -107,7 +107,7 @@ export default function App() {
           D3 ❤️ React Goes Global
         </h1>
         <p style={{ marginBottom: "30px", color: "#666" }}>
-          A chart showing the geographic diversity of students in D3 ❤️ React's
+          A chart showing the geographic student diversity of D3 ❤️ React's
           inaugural cohort.
         </p>
         <div style={{ position: "relative", display: "inline-block" }}>
