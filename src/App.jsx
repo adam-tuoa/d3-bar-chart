@@ -91,6 +91,7 @@ export const Barplot2 = ({ data = [], width = 650, height = 600 }) => {
 };
 
 export default function App() {
+  const isEmbedded = window.self !== window.top;
   const containerRef = useRef(null);
   const [chartWidth, setChartWidth] = useState(650);
   const [chartHeight, setChartHeight] = useState(600);
@@ -136,7 +137,14 @@ export default function App() {
           A chart showing the geographic student diversity of D3 ❤️ React's
           inaugural cohort.
         </p>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "30px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "30px",
+          }}
+        >
           <div style={{ position: "relative", display: "inline-block" }}>
             <Barplot2 data={data} width={chartWidth} height={chartHeight} />
             {chartWidth >= 500 && (
@@ -162,24 +170,26 @@ export default function App() {
           )}
         </div>
       </div>
-      <Footer
-        attribution={{
-          text: "Yan Holtz's D3-loves-react course",
-          href: "http://d3-loves-react.com",
-        }}
-        links={[
-          {
-            href: "https://adam-tuoa.github.io/homepage/",
-            label: "Homepage",
-            icon: "home",
-          },
-          {
-            href: "https://github.com/adam-tuoa",
-            label: "GitHub",
-            icon: "github",
-          },
-        ]}
-      />
+      {!isEmbedded && (
+        <Footer
+          attribution={{
+            text: "Yan Holtz's D3-loves-react course",
+            href: "http://d3-loves-react.com",
+          }}
+          links={[
+            {
+              href: "https://adam-tuoa.github.io/homepage/",
+              label: "Homepage",
+              icon: "home",
+            },
+            {
+              href: "https://github.com/adam-tuoa",
+              label: "GitHub",
+              icon: "github",
+            },
+          ]}
+        />
+      )}
     </div>
   );
 }
